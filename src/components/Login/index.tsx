@@ -69,24 +69,17 @@ const Login = (): React.ReactElement => {
         </CardTitle>
         <Form>
           <FormContainer>
-            <FormGroup
-              label="Enter your e-mail"
-              labelFor="email"
-              disabled={isLoading}
-            >
+            <FormGroup label="Enter your e-mail" labelFor="email">
               <InputGroup
                 id="email"
                 leftIcon="envelope"
                 // @ts-ignore
                 onChange={e => setEmail(e.target.value)}
                 value={email}
+                disabled={isLoading}
               />
             </FormGroup>
-            <FormGroup
-              label="Enter your password"
-              labelFor="password"
-              disabled={isLoading}
-            >
+            <FormGroup label="Enter your password" labelFor="password">
               <InputGroup
                 id="password"
                 type="password"
@@ -94,12 +87,13 @@ const Login = (): React.ReactElement => {
                 value={password}
                 // @ts-ignore
                 onChange={e => setPassword(e.target.value)}
+                disabled={isLoading}
               />
             </FormGroup>
           </FormContainer>
         </Form>
         <BottomContent>
-          <Button icon="log-in" text="Login" onClick={handleLogin} />
+          <Button icon="log-in" text="Login" onClick={handleLogin} disabled={isLoading} />
           <Text>Don't have a account?</Text>
           <Button text="Register" />
         </BottomContent>
