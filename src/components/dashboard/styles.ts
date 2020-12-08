@@ -24,7 +24,5 @@ export const FormContainer = styled.div`
 
 export const BottomContent = styled.div`
   display: flex;
-  flex-direction: column;
-  max-width: 200px;
-  width: 100%;
+  justify-content: space-between;
 `;

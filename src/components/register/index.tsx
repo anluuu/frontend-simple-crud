@@ -5,7 +5,6 @@ import {
   InputGroup,
   FormGroup,
   Button,
-  Text,
 } from '@blueprintjs/core';
 import { useHistory, Link } from 'react-router-dom';
 import {
@@ -28,7 +27,7 @@ const Register = (): React.ReactElement => {
   const history = useHistory();
 
   const signUp = useCallback(async () => {
-    const response = await api.post('/users', {
+    await api.post('/users', {
       email,
       password,
       name,

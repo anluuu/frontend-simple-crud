@@ -25,6 +25,7 @@ interface AuthContextData {
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
   updateUser({ name, email }: { name: string; email: string }): Promise<void>;
+  deleteUser(): void;
 }
 
 const Auth = createContext<AuthContextData>({} as AuthContextData);
@@ -67,8 +68,6 @@ const AuthProvider: React.FC = ({ children }) => {
 
   const updateUser = useCallback(
     async ({ name, email }) => {
-      const token = localStorage.getItem('@simpleCrud:token');
-
       const response = await api.put(
         `/users/${data.user.id}`,
         {
@@ -77,24 +76,32 @@ const AuthProvider: React.FC = ({ children }) => {
         },
         {
           headers: {
-            Authorization: token,
+            Authorization: data.token,
           },
         },
       );
       const { user } = response.data;
 
-      setData(() => {
-        if (token && user) {
+      setData(prev => {
+        if (user) {
           return {
-            token,
+            ...prev,
             user: JSON.parse(user),
           };
         }
         return {} as AuthState;
       });
     },
-    [data.user.id],
+    [data.token, data.user.id],
   );
+
+  const deleteUser = useCallback(async () => {
+    await api.delete(`/users/${data.user.id}`, {
+      headers: {
+        Authorization: data.token,
+      },
+    });
+  }, [data.token, data.user.id]);
 
   const signOut = useCallback(() => {
     localStorage.removeItem('@simpleCrud:token');
@@ -103,7 +110,9 @@ const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <Auth.Provider value={{ user: data.user, signOut, signIn, updateUser }}>
+    <Auth.Provider
+      value={{ user: data.user, signOut, signIn, updateUser, deleteUser }}
+    >
       {children}
     </Auth.Provider>
   );

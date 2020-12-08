@@ -17,12 +17,10 @@ import { useAuth } from '../../hooks/Auth';
 import { useToast } from '../../hooks/Toast';
 
 const Dashboard = (): React.ReactElement => {
-  const { signOut, user, updateUser } = useAuth();
+  const { signOut, user, updateUser, deleteUser } = useAuth();
   const [newName, setNewName] = useState(user.name);
   const [newEmail, setNewEmail] = useState(user.email);
   const [isEditable, setIsEditable] = useState(false);
-
-  const token = localStorage.getItem('@simpleCrud:token');
 
   const { addToast } = useToast();
 
@@ -32,16 +30,6 @@ const Dashboard = (): React.ReactElement => {
 
   const handleEdit = useCallback(async () => {
     try {
-      if (newName === user.name || newEmail === user.email) {
-        addToast({
-          title: 'Attention',
-          type: 'info',
-          description: 'Some of your fields is identical',
-        });
-        setIsEditable(false);
-        return;
-      }
-
       await updateUser({
         name: newName,
         email: newEmail,
@@ -60,7 +48,17 @@ const Dashboard = (): React.ReactElement => {
       });
       setIsEditable(false);
     }
-  }, [addToast, newEmail, newName, updateUser, user.email, user.name]);
+  }, [addToast, newEmail, newName, updateUser]);
+
+  const handleDelete = useCallback(async () => {
+    await deleteUser();
+    addToast({
+      type: 'success',
+      title: 'Deleted user',
+      description: 'The user has been deleted',
+    });
+    await signOut();
+  }, [addToast, deleteUser, signOut]);
   return (
     <Container>
       <Card elevation={Elevation.FOUR}>
@@ -92,6 +90,7 @@ const Dashboard = (): React.ReactElement => {
           </FormContainer>
         </Form>
         <BottomContent>
+          <Button text="Delete" icon="delete" onClick={handleDelete} />
           {!isEditable ? (
             <Button text="Edit" icon="edit" onClick={editUser} />
           ) : (
