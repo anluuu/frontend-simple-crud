@@ -89,6 +89,7 @@ const AuthProvider: React.FC = ({ children }) => {
         },
       );
       setData({ token: data.token, user: response.data });
+      localStorage.setItem('@simpleCrud:user', JSON.stringify(response.data));
       return response.data;
     },
     [data.token],
