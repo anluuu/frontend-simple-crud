@@ -60,7 +60,7 @@ const Dashboard = (): React.ReactElement => {
       });
       setIsEditable(false);
     }
-  }, [addToast, newEmail, newName, user.email, user.name]);
+  }, [addToast, newEmail, newName, updateUser, user.email, user.name]);
   return (
     <Container>
       <Card elevation={Elevation.FOUR}>
