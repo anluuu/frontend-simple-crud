@@ -24,6 +24,7 @@ interface AuthContextData {
   user: User;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
+  updateUser({ name, email }: { name: string; email: string }): Promise<void>;
 }
 
 const Auth = createContext<AuthContextData>({} as AuthContextData);
@@ -64,13 +65,36 @@ const AuthProvider: React.FC = ({ children }) => {
     setData({ token, user });
   }, []);
 
-  const signUp = useCallback(async ({ email, password, name }) => {
-    const response = await api.post('/users', {
-      email,
-      password,
-      name,
-    });
-  }, []);
+  const updateUser = useCallback(
+    async ({ name, email }) => {
+      const token = localStorage.getItem('@simpleCrud:token');
+
+      const response = await api.put(
+        `/users/${data.user.id}`,
+        {
+          name,
+          email,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        },
+      );
+      const { user } = response.data;
+
+      setData(() => {
+        if (token && user) {
+          return {
+            token,
+            user: JSON.parse(user),
+          };
+        }
+        return {} as AuthState;
+      });
+    },
+    [data.user.id],
+  );
 
   const signOut = useCallback(() => {
     localStorage.removeItem('@simpleCrud:token');
@@ -79,7 +103,7 @@ const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <Auth.Provider value={{ user: data.user, signOut, signIn }}>
+    <Auth.Provider value={{ user: data.user, signOut, signIn, updateUser }}>
       {children}
     </Auth.Provider>
   );

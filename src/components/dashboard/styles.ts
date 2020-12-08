@@ -22,4 +22,9 @@ export const FormContainer = styled.div`
   max-width: 300px;
 `;
 
-export const BottomContent = styled.div``;
+export const BottomContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 200px;
+  width: 100%;
+`;
