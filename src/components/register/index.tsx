@@ -64,7 +64,7 @@ const Register = (): React.ReactElement => {
       });
       setIsLoading(false);
     }
-  }, [addToast, email, history, name, password]);
+  }, [addToast, email, history, name, password, signUp]);
 
   return (
     <Container>

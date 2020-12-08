@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Card,
   Elevation,
@@ -14,9 +14,37 @@ import {
   BottomContent,
 } from './styles';
 import { useAuth } from '../../hooks/Auth';
+import { useToast } from '../../hooks/Toast';
 
 const Dashboard = (): React.ReactElement => {
   const { signOut, user } = useAuth();
+  const [newName, setNewName] = useState('');
+  const [newEmail, setNewEmail] = useState('');
+  const [isEditable, setIsEditable] = useState(false);
+
+  const token = localStorage.getItem('@simpleCrud:token');
+  const { addToast } = useToast();
+
+  const editUser = useCallback(() => {
+    setIsEditable(true);
+    try {
+      if (newName === user.name || newEmail === user.email)
+        addToast({
+          title: 'Attention',
+          type: 'info',
+          description: 'Some of your fields is identical',
+        });
+      setIsEditable(false);
+      return;
+    } catch (err) {
+      addToast({
+        type: 'error',
+        title: 'Something Wrong',
+        description: 'An unexpected error happened',
+      });
+      setIsEditable(false);
+    }
+  }, []);
   return (
     <Container>
       <Card elevation={Elevation.FOUR}>
@@ -30,8 +58,9 @@ const Dashboard = (): React.ReactElement => {
                 id="email"
                 leftIcon="envelope"
                 // @ts-ignore
+                onChange={e => setNewEmail(e.target.value)}
                 value={user.email}
-                disabled={!!user}
+                disabled={!isEditable}
               />
             </FormGroup>
             <FormGroup label="Logged user name" labelFor="password">
@@ -40,13 +69,15 @@ const Dashboard = (): React.ReactElement => {
                 leftIcon="user"
                 value={user.name}
                 // @ts-ignore
-                disabled={!!user}
+                onChange={e => setNewName(e.target.value)}
+                disabled={!isEditable}
               />
             </FormGroup>
           </FormContainer>
         </Form>
         <BottomContent>
-          <Button text="Logout" onClick={signOut} />
+          <Button text="Edit" icon="edit" onClick={editUser} />
+          <Button text="Logout" icon="log-out" onClick={signOut} />
         </BottomContent>
       </Card>
     </Container>
