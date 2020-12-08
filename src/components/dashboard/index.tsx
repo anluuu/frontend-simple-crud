@@ -49,7 +49,7 @@ const Dashboard = (): React.ReactElement => {
       });
       setIsEditable(false);
     }
-  }, [addToast, newEmail, newName, updateUser]);
+  }, [addToast, newEmail, newName, updateUser, user.id]);
 
   const handleDelete = useCallback(async () => {
     await deleteUser(user.id);

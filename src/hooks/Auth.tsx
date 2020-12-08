@@ -84,7 +84,7 @@ const AuthProvider: React.FC = ({ children }) => {
         },
         {
           headers: {
-            Authorization: data.token,
+            authorization: data.token,
           },
         },
       );
@@ -97,7 +97,7 @@ const AuthProvider: React.FC = ({ children }) => {
     async id => {
       await api.delete(`/users/${id}`, {
         headers: {
-          Authorization: data.token,
+          authorization: data.token,
         },
       });
     },
