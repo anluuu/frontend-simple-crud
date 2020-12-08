@@ -23,10 +23,14 @@ const Dashboard = (): React.ReactElement => {
   const [isEditable, setIsEditable] = useState(false);
 
   const token = localStorage.getItem('@simpleCrud:token');
+
   const { addToast } = useToast();
 
   const editUser = useCallback(() => {
     setIsEditable(true);
+  }, []);
+
+  const handleEdit = useCallback(() => {
     try {
       if (newName === user.name || newEmail === user.email)
         addToast({
@@ -44,7 +48,7 @@ const Dashboard = (): React.ReactElement => {
       });
       setIsEditable(false);
     }
-  }, []);
+  }, [addToast, newEmail, newName, user.email, user.name]);
   return (
     <Container>
       <Card elevation={Elevation.FOUR}>
@@ -76,7 +80,11 @@ const Dashboard = (): React.ReactElement => {
           </FormContainer>
         </Form>
         <BottomContent>
-          <Button text="Edit" icon="edit" onClick={editUser} />
+          {!isEditable ? (
+            <Button text="Edit" icon="edit" onClick={editUser} />
+          ) : (
+            <Button text="Save" icon="saved" onClick={handleEdit} />
+          )}
           <Button text="Logout" icon="log-out" onClick={signOut} />
         </BottomContent>
       </Card>
