@@ -93,7 +93,7 @@ const Login = (): React.ReactElement => {
           </FormContainer>
         </Form>
         <BottomContent>
-          <Button icon="log-in" text="Login" onClick={handleLogin} disabled={isLoading} />
+          <Button icon="log-in" text="Login" onClick={handleLogin} loading={isLoading} />
           <Text>Don't have a account?</Text>
           <Button text="Register" />
         </BottomContent>
