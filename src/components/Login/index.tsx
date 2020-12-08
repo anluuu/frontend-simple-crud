@@ -21,19 +21,21 @@ import { useToast } from '../../hooks/Toast';
 const Login = (): React.ReactElement => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const { signIn } = useAuth();
   const { addToast } = useToast();
   const history = useHistory();
 
   const handleLogin = useCallback(async () => {
+    setIsLoading(true);
     if (!email || !password) {
       addToast({
         type: 'error',
         title: 'Something Wrong',
         description: 'Check your credentials',
       });
-
+      setIsLoading(false);
       return;
     }
     try {
@@ -55,8 +57,9 @@ const Login = (): React.ReactElement => {
         title: 'Something Wrong',
         description: 'An unexpected error happened',
       });
+      setIsLoading(false);
     }
-  }, [addToast, email, password, signIn]);
+  }, [addToast, email, history, password, signIn]);
 
   return (
     <Container>
@@ -66,7 +69,11 @@ const Login = (): React.ReactElement => {
         </CardTitle>
         <Form>
           <FormContainer>
-            <FormGroup label="Enter your e-mail" labelFor="email">
+            <FormGroup
+              label="Enter your e-mail"
+              labelFor="email"
+              disabled={isLoading}
+            >
               <InputGroup
                 id="email"
                 leftIcon="envelope"
@@ -75,7 +82,11 @@ const Login = (): React.ReactElement => {
                 value={email}
               />
             </FormGroup>
-            <FormGroup label="Enter your password" labelFor="password">
+            <FormGroup
+              label="Enter your password"
+              labelFor="password"
+              disabled={isLoading}
+            >
               <InputGroup
                 id="password"
                 type="password"
