@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { BrowserRouter, Switch } from 'react-router-dom';
 import Dashboard from '../components/dashboard';
 import Login from '../components/Login';
 import Register from '../components/register';

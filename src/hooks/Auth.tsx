@@ -64,6 +64,14 @@ const AuthProvider: React.FC = ({ children }) => {
     setData({ token, user });
   }, []);
 
+  const signUp = useCallback(async ({ email, password, name }) => {
+    const response = await api.post('/users', {
+      email,
+      password,
+      name,
+    });
+  }, []);
+
   const signOut = useCallback(() => {
     localStorage.removeItem('@simpleCrud:token');
     localStorage.removeItem('@simpleCrud:user');

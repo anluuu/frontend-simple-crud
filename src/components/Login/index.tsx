@@ -7,7 +7,7 @@ import {
   Button,
   Text,
 } from '@blueprintjs/core';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import {
   Container,
   CardTitle,
@@ -93,9 +93,16 @@ const Login = (): React.ReactElement => {
           </FormContainer>
         </Form>
         <BottomContent>
-          <Button icon="log-in" text="Login" onClick={handleLogin} loading={isLoading} />
+          <Button
+            icon="log-in"
+            text="Login"
+            onClick={handleLogin}
+            loading={isLoading}
+          />
           <Text>Don't have a account?</Text>
-          <Button text="Register" />
+          <Link to="/register">
+            <Button text="Register" />
+          </Link>
         </BottomContent>
       </Card>
     </Container>
