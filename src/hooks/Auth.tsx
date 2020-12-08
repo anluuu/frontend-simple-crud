@@ -32,7 +32,7 @@ interface AuthContextData {
     name: string;
     email: string;
     id: string;
-  }): Promise<void>;
+  }): Promise<{ name: string; email: string }>;
   deleteUser(id: string): void;
 }
 

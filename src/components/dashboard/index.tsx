@@ -30,7 +30,7 @@ const Dashboard = (): React.ReactElement => {
 
   const handleEdit = useCallback(async () => {
     try {
-      await updateUser({
+      const updatedUser = await updateUser({
         name: newName,
         email: newEmail,
         id: user.id,
@@ -41,6 +41,10 @@ const Dashboard = (): React.ReactElement => {
         title: 'Success',
         description: 'Updated with success',
       });
+
+      setNewName(updatedUser.name);
+      setNewEmail(updatedUser.email);
+      setIsEditable(false);
     } catch (err) {
       addToast({
         type: 'error',
@@ -59,7 +63,7 @@ const Dashboard = (): React.ReactElement => {
       description: 'The user has been deleted',
     });
     await signOut();
-  }, [addToast, deleteUser, signOut]);
+  }, [addToast, deleteUser, signOut, user.id]);
   return (
     <Container>
       <Card elevation={Elevation.FOUR}>
