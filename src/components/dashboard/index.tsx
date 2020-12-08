@@ -97,11 +97,27 @@ const Dashboard = (): React.ReactElement => {
         <BottomContent>
           <Button text="Delete" icon="delete" onClick={handleDelete} />
           {!isEditable ? (
-            <Button text="Edit" icon="edit" onClick={editUser} />
+            <Button
+              text="Edit"
+              icon="edit"
+              onClick={editUser}
+              disabled={isEditable}
+            />
           ) : (
-            <Button text="Save" icon="saved" onClick={handleEdit} />
+            <Button
+              text="Save"
+              icon="saved"
+              onClick={handleEdit}
+              loading={isEditable}
+              disabled={!isEditable}
+            />
           )}
-          <Button text="Logout" icon="log-out" onClick={signOut} />
+          <Button
+            text="Logout"
+            icon="log-out"
+            onClick={signOut}
+            disabled={!isEditable}
+          />
         </BottomContent>
       </Card>
     </Container>
