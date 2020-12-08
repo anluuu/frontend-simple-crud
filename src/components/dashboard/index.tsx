@@ -33,6 +33,7 @@ const Dashboard = (): React.ReactElement => {
       await updateUser({
         name: newName,
         email: newEmail,
+        id: user.id,
       });
 
       addToast({
@@ -51,7 +52,7 @@ const Dashboard = (): React.ReactElement => {
   }, [addToast, newEmail, newName, updateUser]);
 
   const handleDelete = useCallback(async () => {
-    await deleteUser();
+    await deleteUser(user.id);
     addToast({
       type: 'success',
       title: 'Deleted user',

@@ -107,12 +107,16 @@ const Register = (): React.ReactElement => {
           </FormContainer>
         </Form>
         <BottomContent>
+          <Link to="/">
+            <Button icon="arrow-left" text="Back" />
+          </Link>
           <Button
             icon="log-in"
             text="Register"
             onClick={handleRegister}
             loading={isLoading}
           />
+
         </BottomContent>
       </Card>
     </Container>
