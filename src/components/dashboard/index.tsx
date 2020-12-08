@@ -21,6 +21,7 @@ const Dashboard = (): React.ReactElement => {
   const [newName, setNewName] = useState(user.name);
   const [newEmail, setNewEmail] = useState(user.email);
   const [isEditable, setIsEditable] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { addToast } = useToast();
 
@@ -29,6 +30,7 @@ const Dashboard = (): React.ReactElement => {
   }, []);
 
   const handleEdit = useCallback(async () => {
+    setIsLoading(true);
     try {
       const updatedUser = await updateUser({
         name: newName,
@@ -44,15 +46,15 @@ const Dashboard = (): React.ReactElement => {
 
       setNewName(updatedUser.name);
       setNewEmail(updatedUser.email);
-      setIsEditable(false);
     } catch (err) {
       addToast({
         type: 'error',
         title: 'Something Wrong',
         description: 'An unexpected error happened',
       });
-      setIsEditable(false);
     }
+    setIsLoading(false);
+    setIsEditable(false);
   }, [addToast, newEmail, newName, updateUser, user.id]);
 
   const handleDelete = useCallback(async () => {
@@ -95,7 +97,12 @@ const Dashboard = (): React.ReactElement => {
           </FormContainer>
         </Form>
         <BottomContent>
-          <Button text="Delete" icon="delete" onClick={handleDelete} />
+          <Button
+            text="Delete"
+            icon="delete"
+            onClick={handleDelete}
+            disabled={isEditable}
+          />
           {!isEditable ? (
             <Button
               text="Edit"
@@ -108,7 +115,7 @@ const Dashboard = (): React.ReactElement => {
               text="Save"
               icon="saved"
               onClick={handleEdit}
-              loading={isEditable}
+              loading={isLoading}
               disabled={!isEditable}
             />
           )}
@@ -116,7 +123,7 @@ const Dashboard = (): React.ReactElement => {
             text="Logout"
             icon="log-out"
             onClick={signOut}
-            disabled={!isEditable}
+            disabled={isEditable}
           />
         </BottomContent>
       </Card>
